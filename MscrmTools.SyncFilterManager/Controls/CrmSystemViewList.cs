@@ -463,7 +463,7 @@ namespace MscrmTools.SyncFilterManager.Controls
                     bw.ReportProgress(0,
                         string.Format("Applying filter(s) for user {0}...", user.GetAttributeValue<string>("fullname")));
 
-                    rm.ApplyRulesToUser(templates, user.Id);
+                    rm.ApplyRulesToUser(templates, user.Id, true);
                 }
             }
         }
@@ -839,7 +839,7 @@ namespace MscrmTools.SyncFilterManager.Controls
                             erc.Add(new EntityReference("savedquery", ruleId));
                         }
 
-                        rm.ApplyRulesToUser(erc, user.Id);
+                        rm.ApplyRulesToUser(erc, user.Id, true);
                     }
                 }
             }

@@ -4,6 +4,7 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
+using Microsoft.Xrm.Tooling.Connector;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -77,15 +78,48 @@ namespace MscrmTools.SyncFilterManager.AppCode
             }
         }
 
-        public void ApplyRulesToUser(EntityReferenceCollection ec, Guid userId)
+        public void ApplyRulesToUser(EntityReferenceCollection ec, Guid userId, bool isOutlookFilter)
         {
-            var request = new InstantiateFiltersRequest
-            {
-                UserId = userId,
-                TemplateCollection = ec
-            };
+            var tempUserId = ((CrmServiceClient)service).CallerId;
+            ((CrmServiceClient)service).CallerId = userId;
 
-            service.Execute(request);
+            try
+            {
+                // TODO ICI
+                var existingQueries = service.RetrieveMultiple(new QueryExpression("userquery")
+                {
+                    Criteria = new FilterExpression
+                    {
+                        Conditions =
+                        {
+                            new ConditionExpression("parentqueryid", ConditionOperator.In, ec.Select(e => e.Id).ToArray())
+                        }
+                    }
+                }).Entities;
+
+                var transac = new ExecuteTransactionRequest
+                {
+                    Requests = new OrganizationRequestCollection(),
+                    ReturnResponses = false
+                };
+
+                foreach (var query in existingQueries)
+                {
+                    transac.Requests.Add(new DeleteRequest { Target = query.ToEntityReference() });
+                }
+
+                transac.Requests.Add(new InstantiateFiltersRequest
+                {
+                    UserId = userId,
+                    TemplateCollection = ec
+                });
+
+                service.Execute(transac);
+            }
+            finally
+            {
+                ((CrmServiceClient)service).CallerId = tempUserId;
+            }
         }
 
         public void ApplyRuleToActiveUsers(EntityReferenceCollection ec)
@@ -302,19 +336,6 @@ namespace MscrmTools.SyncFilterManager.AppCode
             service.Execute(request);
         }
 
-        private string RemoveFetchOrderNodes(string fetch)
-        {
-            var fetchDoc = new XmlDocument();
-            fetchDoc.LoadXml(fetch);
-            var orderNodes = fetchDoc.SelectNodes("//order");
-            foreach (XmlNode orderNode in orderNodes)
-            {
-                orderNode.ParentNode.RemoveChild(orderNode);
-            }
-            return fetchDoc.OuterXml;
-
-        }
-
         private void RemoveAllRulesForUser(Guid userId)
         {
             var currentId = detail.ServiceClient.OrganizationServiceProxy.CallerId;
@@ -328,6 +349,18 @@ namespace MscrmTools.SyncFilterManager.AppCode
             }
 
             detail.ServiceClient.OrganizationServiceProxy.CallerId = currentId;
+        }
+
+        private string RemoveFetchOrderNodes(string fetch)
+        {
+            var fetchDoc = new XmlDocument();
+            fetchDoc.LoadXml(fetch);
+            var orderNodes = fetchDoc.SelectNodes("//order");
+            foreach (XmlNode orderNode in orderNodes)
+            {
+                orderNode.ParentNode.RemoveChild(orderNode);
+            }
+            return fetchDoc.OuterXml;
         }
     }
 }
