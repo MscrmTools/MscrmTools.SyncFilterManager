@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>MscrmTools.SyncFilterManager</id>
+    <version>1.2020.4.2</version>
+    <title>Sync Filter Manager for XrmToolBox</title>
+    <authors>MscrmTools</authors>
+    <owners>MscrmTools</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/MscrmTools/MscrmTools.SyncFilterManager</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/wiki/MscrmTools/XrmToolBox/Images/logo_0100.png</iconUrl>
+    <description>Manage filters for offline, Outlook and server side synchronizations</description>
+    <summary>Manage filters for offline, Outlook and server side synchronizations</summary>
+    <releaseNotes>Fixed NullReferenceException when applying a user filter to other users (#4, #5)</releaseNotes>
+    <tags>XrmToolBox Plugin SyncFilterManager</tags>
+    <dependencies>
+      <dependency id="XrmToolBox" version="1.2021.1.44" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Plugins\MscrmTools.SyncFilterManager.dll" target="lib\net452\Plugins" />
+  </files>
+</package>

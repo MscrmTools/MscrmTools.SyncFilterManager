@@ -68,7 +68,7 @@ namespace MscrmTools.SyncFilterManager.AppCode
                     rule.Id = Guid.Empty;
                     rule.Attributes.Remove("userqueryid");
                     rule["ownerid"] = new EntityReference("systemuser", targetUser.Id);
-                    foreach (var amd in emd.EntityMetadata.Attributes.Where(a => a.IsValidForCreate.Value == false))
+                    foreach (var amd in emd.EntityMetadata.Attributes.Where(a => !(a.IsValidForCreate ?? false)))
                     {
                         rule.Attributes.Remove(amd.LogicalName);
                     }
@@ -297,7 +297,7 @@ namespace MscrmTools.SyncFilterManager.AppCode
 
         public void ResetUsersRulesFromDefault(List<Entity> users, BackgroundWorker worker = null)
         {
-            var currentId = detail.ServiceClient.OrganizationServiceProxy.CallerId;
+            var currentId = detail.ServiceClient.CallerId;
 
             foreach (var user in users)
             {
@@ -306,16 +306,16 @@ namespace MscrmTools.SyncFilterManager.AppCode
                     worker.ReportProgress(0, "Reseting filters for user \"" + user.GetAttributeValue<string>("fullname") + "\"");
                 }
 
-                detail.ServiceClient.OrganizationServiceProxy.CallerId = user.Id;
+                detail.ServiceClient.CallerId = user.Id;
 
                 var request = new ResetUserFiltersRequest { QueryType = 16 };
-                detail.ServiceClient.OrganizationServiceProxy.Execute(request);
+                detail.ServiceClient.Execute(request);
 
                 request = new ResetUserFiltersRequest { QueryType = 256 };
-                detail.ServiceClient.OrganizationServiceProxy.Execute(request);
+                detail.ServiceClient.Execute(request);
             }
 
-            detail.ServiceClient.OrganizationServiceProxy.CallerId = currentId;
+            detail.ServiceClient.CallerId = currentId;
         }
 
         public void UpdateRuleFromSystemView(Entity systemView, Entity rule, BackgroundWorker worker = null)
@@ -338,17 +338,17 @@ namespace MscrmTools.SyncFilterManager.AppCode
 
         private void RemoveAllRulesForUser(Guid userId)
         {
-            var currentId = detail.ServiceClient.OrganizationServiceProxy.CallerId;
-            detail.ServiceClient.OrganizationServiceProxy.CallerId = userId;
+            var currentId = detail.ServiceClient.CallerId;
+            detail.ServiceClient.CallerId = userId;
 
             var rules = GetRules(new[] { 16, 256 }, new List<Entity> { new Entity("systemuser") { Id = userId } });
 
             foreach (var rule in rules.Entities)
             {
-                detail.ServiceClient.OrganizationServiceProxy.Delete(rule.LogicalName, rule.Id);
+                detail.ServiceClient.Delete(rule.LogicalName, rule.Id);
             }
 
-            detail.ServiceClient.OrganizationServiceProxy.CallerId = currentId;
+            detail.ServiceClient.CallerId = currentId;
         }
 
         private string RemoveFetchOrderNodes(string fetch)
