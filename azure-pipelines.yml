@@ -1,8 +1,6 @@
 pool:
-  vm-image: 'windows-2019'
-  demands:
-  - msbuild
-  - visualstudio
+  vm-image: windows-2019
+
 
 variables:
   ToolName: 'MscrmTools.SyncFilterManager'
