@@ -36,7 +36,11 @@
             this.lvUsers = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.pnlView = new System.Windows.Forms.Panel();
+            this.lblViewSelection = new System.Windows.Forms.Label();
+            this.cbbViews = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
+            this.pnlView.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblSearch
@@ -58,11 +62,13 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(662, 26);
             this.txtSearch.TabIndex = 1;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
             // 
             // btnSearch
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearch.Enabled = false;
             this.btnSearch.Location = new System.Drawing.Point(748, 2);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSearch.Name = "btnSearch";
@@ -81,7 +87,7 @@
             this.chkSelectUnselectAll.Name = "chkSelectUnselectAll";
             this.chkSelectUnselectAll.Size = new System.Drawing.Size(166, 24);
             this.chkSelectUnselectAll.TabIndex = 4;
-            this.chkSelectUnselectAll.Text = "Select/Unselect all";
+            this.chkSelectUnselectAll.Text = "Check/Uncheck all";
             this.chkSelectUnselectAll.UseVisualStyleBackColor = true;
             this.chkSelectUnselectAll.CheckedChanged += new System.EventHandler(this.chkSelectUnselectAll_CheckedChanged);
             // 
@@ -92,23 +98,24 @@
             this.panel1.Controls.Add(this.txtSearch);
             this.panel1.Controls.Add(this.btnSearch);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Location = new System.Drawing.Point(0, 57);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1048, 46);
             this.panel1.TabIndex = 5;
             // 
             // lvUsers
             // 
+            this.lvUsers.CheckBoxes = true;
             this.lvUsers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
             this.lvUsers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvUsers.FullRowSelect = true;
             this.lvUsers.HideSelection = false;
-            this.lvUsers.Location = new System.Drawing.Point(0, 46);
+            this.lvUsers.Location = new System.Drawing.Point(0, 103);
             this.lvUsers.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.lvUsers.Name = "lvUsers";
-            this.lvUsers.Size = new System.Drawing.Size(1048, 669);
+            this.lvUsers.Size = new System.Drawing.Size(1048, 612);
             this.lvUsers.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvUsers.TabIndex = 6;
             this.lvUsers.UseCompatibleStateImageBehavior = false;
@@ -125,17 +132,51 @@
             this.columnHeader2.Text = "Business Unit";
             this.columnHeader2.Width = 150;
             // 
+            // pnlView
+            // 
+            this.pnlView.Controls.Add(this.lblViewSelection);
+            this.pnlView.Controls.Add(this.cbbViews);
+            this.pnlView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlView.Location = new System.Drawing.Point(0, 0);
+            this.pnlView.Name = "pnlView";
+            this.pnlView.Size = new System.Drawing.Size(1048, 57);
+            this.pnlView.TabIndex = 7;
+            // 
+            // lblViewSelection
+            // 
+            this.lblViewSelection.AutoSize = true;
+            this.lblViewSelection.Location = new System.Drawing.Point(4, 17);
+            this.lblViewSelection.Name = "lblViewSelection";
+            this.lblViewSelection.Size = new System.Drawing.Size(51, 20);
+            this.lblViewSelection.TabIndex = 1;
+            this.lblViewSelection.Text = "Views";
+            // 
+            // cbbViews
+            // 
+            this.cbbViews.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbbViews.FormattingEnabled = true;
+            this.cbbViews.Location = new System.Drawing.Point(75, 14);
+            this.cbbViews.Name = "cbbViews";
+            this.cbbViews.Size = new System.Drawing.Size(969, 28);
+            this.cbbViews.TabIndex = 0;
+            this.cbbViews.SelectedIndexChanged += new System.EventHandler(this.cbbViews_SelectedIndexChanged);
+            // 
             // CrmUserList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lvUsers);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlView);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "CrmUserList";
             this.Size = new System.Drawing.Size(1048, 715);
+            this.Load += new System.EventHandler(this.CrmUserList_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.pnlView.ResumeLayout(false);
+            this.pnlView.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -150,5 +191,8 @@
         private System.Windows.Forms.ListView lvUsers;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.Panel pnlView;
+        private System.Windows.Forms.Label lblViewSelection;
+        private System.Windows.Forms.ComboBox cbbViews;
     }
 }

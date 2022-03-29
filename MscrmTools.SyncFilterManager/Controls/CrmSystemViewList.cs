@@ -47,7 +47,9 @@ namespace MscrmTools.SyncFilterManager.Controls
 
         #region Properties
 
-        public ConnectionDetail ConnectionDetail { set { connectionDetail = value; } }
+        public ConnectionDetail ConnectionDetail
+        { set { connectionDetail = value; } }
+
         public bool DisplayOfflineFilter { get; set; }
         public bool DisplayOutlookFilter { get; set; }
 
@@ -61,9 +63,11 @@ namespace MscrmTools.SyncFilterManager.Controls
         public bool DisplaySystemView { get; set; }
 
         [Description("Entity to display"), Category("CRM")]
-        public string EntityName { set { entityName = value; } get { return entityName; } }
+        public string EntityName
+        { set { entityName = value; } get { return entityName; } }
 
-        public IOrganizationService Service { set { service = value; } }
+        public IOrganizationService Service
+        { set { service = value; } }
 
         #endregion Properties
 
@@ -374,14 +378,17 @@ namespace MscrmTools.SyncFilterManager.Controls
 
             var rm = new RuleManager(entityName, service, connectionDetail);
 
-            foreach (ListViewItem item in (ListView.SelectedListViewItemCollection)e.Argument)
+            Invoke(new Action(() =>
             {
-                var rule = (Entity)item.Tag;
+                foreach (ListViewItem item in (ListView.SelectedListViewItemCollection)e.Argument)
+                {
+                    var rule = (Entity)item.Tag;
 
-                rm.DeleteRule(rule.Id);
+                    rm.DeleteRule(rule.Id);
 
-                deletedItems.Add(item);
-            }
+                    deletedItems.Add(item);
+                }
+            }));
 
             e.Result = deletedItems;
         }
@@ -525,21 +532,24 @@ namespace MscrmTools.SyncFilterManager.Controls
 
         private void bwCreateFilterFromView_DoWork(object sender, DoWorkEventArgs e)
         {
-            var argument = (object[])e.Argument;
-            var worker = (BackgroundWorker)sender;
-            var items = (ListView.SelectedListViewItemCollection)argument[0];
-            var rm = new RuleManager("savedquery", service, connectionDetail);
-
-            var views = (from ListViewItem item in items select (Entity)item.Tag).ToList();
-
-            var rulesIds = rm.CreateRuleFromSystemView(views, (int)argument[1]);
-
-            e.Result = 1;
-
-            if (!(bool)argument[2])
+            Invoke(new Action(() =>
             {
-                ApplyTemplateToUsers(rulesIds, "Do you want to apply this new template to some users?", rm, worker);
-            }
+                var argument = (object[])e.Argument;
+                var worker = (BackgroundWorker)sender;
+                var items = (ListView.SelectedListViewItemCollection)argument[0];
+                var rm = new RuleManager("savedquery", service, connectionDetail);
+
+                var views = (from ListViewItem item in items select (Entity)item.Tag).ToList();
+
+                var rulesIds = rm.CreateRuleFromSystemView(views, (int)argument[1]);
+
+                e.Result = 1;
+
+                if (!(bool)argument[2])
+                {
+                    ApplyTemplateToUsers(rulesIds, "Do you want to apply this new template to some users?", rm, worker);
+                }
+            }));
         }
 
         private void bwCreateFilterFromView_ProgressChanged(object sender, ProgressChangedEventArgs e)

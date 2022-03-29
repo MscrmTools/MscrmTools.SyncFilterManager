@@ -1,4 +1,5 @@
 ﻿using McTools.Xrm.Connection;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using MscrmTools.SyncFilterManager.AppCode;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 
@@ -16,12 +18,18 @@ namespace MscrmTools.SyncFilterManager.Controls
     {
         private ConnectionDetail connectionDetail;
         private Panel loadingPanel;
-
+        private string query;
+        private List<Entity> savedQueries;
+        private Thread searchThread;
         private IOrganizationService service;
+        private List<ListViewItem> users;
 
         public CrmUserList()
         {
             InitializeComponent();
+
+            ToolTip tt = new ToolTip() { IsBalloon = true, ToolTipTitle = "Information" };
+            tt.SetToolTip(btnSearch, "Select a Quick search view to use this button");
         }
 
         public CrmUserList(IOrganizationService service, bool selectMultipleUsers, ConnectionDetail connectionDetail)
@@ -41,7 +49,10 @@ namespace MscrmTools.SyncFilterManager.Controls
 
         public ConnectionDetail ConnectionDetail
         {
-            set { connectionDetail = value; }
+            set
+            {
+                connectionDetail = value;
+            }
         }
 
         [Description("Select Multiple Users"), Category("List")]
@@ -53,12 +64,17 @@ namespace MscrmTools.SyncFilterManager.Controls
 
         public IOrganizationService Service
         {
-            set { service = value; }
+            set
+            {
+                service = value;
+                LoadViews();
+                FillViewsList();
+            }
         }
 
         public List<Entity> GetSelectedUsers()
         {
-            return (from ListViewItem lvi in lvUsers.SelectedItems select (Entity)lvi.Tag).ToList();
+            return (from ListViewItem lvi in lvUsers.CheckedItems select (Entity)lvi.Tag).ToList();
         }
 
         internal void ReplaceUserFilters()
@@ -110,14 +126,23 @@ namespace MscrmTools.SyncFilterManager.Controls
 
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
-            var searchTerm = e.Argument.ToString();
-
-            var qe = new QueryExpression("systemuser");
-            qe.ColumnSet = new ColumnSet(new[] { "systemuserid", "fullname", "businessunitid" });
-            qe.PageInfo = new PagingInfo { Count = 250, PageNumber = 1, ReturnTotalRecordCount = true };
-            qe.Criteria = new FilterExpression(LogicalOperator.And)
+            QueryExpression qe;
+            if (!string.IsNullOrEmpty(query))
             {
-                Filters =
+                qe = ((FetchXmlToQueryExpressionResponse)service.Execute(new FetchXmlToQueryExpressionRequest
+                {
+                    FetchXml = query
+                })).Query;
+            }
+            else
+            {
+                var searchTerm = e.Argument.ToString();
+
+                qe = new QueryExpression("systemuser");
+                qe.ColumnSet = new ColumnSet(new[] { "systemuserid", "fullname", "businessunitid" });
+                qe.Criteria = new FilterExpression(LogicalOperator.And)
+                {
+                    Filters =
                 {
                     new FilterExpression(LogicalOperator.Or)
                     {
@@ -138,18 +163,17 @@ namespace MscrmTools.SyncFilterManager.Controls
                         Conditions = {new ConditionExpression("isdisabled", ConditionOperator.Equal, false)}
                     }
                 }
-            };
+                };
+            }
+            qe.PageInfo = new PagingInfo { Count = 250, PageNumber = 1, ReturnTotalRecordCount = true };
 
             EntityCollection result;
             var results = new List<Entity>();
+            InformationPanel.ChangeInformationPanelMessage(loadingPanel, "Retrieving users...");
             do
             {
                 result = service.RetrieveMultiple(qe);
                 results.AddRange(result.Entities);
-
-                InformationPanel.ChangeInformationPanelMessage(loadingPanel,
-                    string.Format("Retrieving users ({0} %)...",
-                        qe.PageInfo.PageNumber * qe.PageInfo.Count / result.TotalRecordCount * 100));
 
                 qe.PageInfo.PageNumber++;
             } while (result.MoreRecords);
@@ -159,7 +183,7 @@ namespace MscrmTools.SyncFilterManager.Controls
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            btnSearch.Enabled = true;
+            //btnSearch.Enabled = true;
 
             Controls.Remove(loadingPanel);
             loadingPanel.Dispose();
@@ -171,16 +195,16 @@ namespace MscrmTools.SyncFilterManager.Controls
             }
             else
             {
-                var users = new List<ListViewItem>();
+                users = new List<ListViewItem>();
 
                 foreach (var user in (List<Entity>)e.Result)
                 {
                     var lvi = new ListViewItem(user.GetAttributeValue<string>("fullname")) { Tag = user };
-                    lvi.SubItems.Add(user.GetAttributeValue<EntityReference>("businessunitid").Name);
+                    lvi.SubItems.Add(user.GetAttributeValue<EntityReference>("businessunitid")?.Name);
                     users.Add(lvi);
                 }
 
-                lvUsers.Items.AddRange(users.ToArray());
+                DisplayUsers();
             }
         }
 
@@ -211,17 +235,74 @@ namespace MscrmTools.SyncFilterManager.Controls
             }
         }
 
+        private void cbbViews_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var item = cbbViews.SelectedItem;
+            if (item == null) return;
+
+            if (item is SavedQueryWrapper view)
+            {
+                var isQuickFind = view.SavedQuery.GetAttributeValue<int>("querytype") == 4;
+
+                btnSearch.Enabled = isQuickFind;
+                if (!isQuickFind)
+                {
+                    query = view.SavedQuery.GetAttributeValue<string>("fetchxml");
+                    LoadUsers();
+                }
+                else
+                {
+                    query = null;
+                }
+            }
+        }
+
         private void chkSelectUnselectAll_CheckedChanged(object sender, EventArgs e)
         {
             foreach (ListViewItem item in lvUsers.Items)
             {
-                item.Selected = chkSelectUnselectAll.Checked;
+                item.Checked = chkSelectUnselectAll.Checked;
             }
+        }
+
+        private void CrmUserList_Load(object sender, EventArgs e)
+        {
+            if (service == null) return;
+
+            var bw = new BackgroundWorker { WorkerReportsProgress = true };
+            bw.DoWork += (bw2, evt) =>
+            {
+                LoadViews();
+            };
+            bw.RunWorkerCompleted += (bw2, evt) =>
+            {
+                FillViewsList();
+            };
+            bw.ProgressChanged += (bw2, evt) => { };
+            bw.RunWorkerAsync();
+        }
+
+        private void DisplayUsers(object search = null)
+        {
+            Invoke(new Action(() =>
+            {
+                lvUsers.Items.Clear();
+                lvUsers.Items.AddRange(users.Where(u => search == null || u.Text.IndexOf(search?.ToString(), StringComparison.InvariantCultureIgnoreCase) >= 0).ToArray());
+            }));
+        }
+
+        private void FillViewsList()
+        {
+            cbbViews.Items.Clear();
+            cbbViews.Items.Add("--- System views ---");
+            cbbViews.Items.AddRange(savedQueries.Where(s => s.LogicalName == "savedquery").Select(s => new SavedQueryWrapper(s)).OrderBy(s => s.ToString()).ToArray());
+            cbbViews.Items.Add("--- Personal views ---");
+            cbbViews.Items.AddRange(savedQueries.Where(s => s.LogicalName == "userquery").Select(s => new SavedQueryWrapper(s)).OrderBy(s => s.ToString()).ToArray());
         }
 
         private void LoadUsers()
         {
-            btnSearch.Enabled = false;
+            //btnSearch.Enabled = false;
             lvUsers.Items.Clear();
 
             loadingPanel = InformationPanel.GetInformationPanel(this, "Retrieving users...", 340, 120);
@@ -230,6 +311,37 @@ namespace MscrmTools.SyncFilterManager.Controls
             bw.DoWork += bw_DoWork;
             bw.RunWorkerCompleted += bw_RunWorkerCompleted;
             bw.RunWorkerAsync(txtSearch.Text);
+        }
+
+        private void LoadViews()
+        {
+            if (service == null) return;
+
+            savedQueries = service.RetrieveMultiple(new QueryExpression("savedquery")
+            {
+                NoLock = true,
+                ColumnSet = new ColumnSet(true),
+                Criteria = new FilterExpression
+                {
+                    Conditions =
+                            {
+                                new ConditionExpression("returnedtypecode", ConditionOperator.Equal, "systemuser")
+                            }
+                }
+            }).Entities.ToList();
+
+            savedQueries.AddRange(service.RetrieveMultiple(new QueryExpression("userquery")
+            {
+                NoLock = true,
+                ColumnSet = new ColumnSet(true),
+                Criteria = new FilterExpression
+                {
+                    Conditions =
+                            {
+                                new ConditionExpression("returnedtypecode", ConditionOperator.Equal, "systemuser")
+                            }
+                }
+            }).Entities.ToList());
         }
 
         private void lvUsers_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -243,6 +355,16 @@ namespace MscrmTools.SyncFilterManager.Controls
             if (e.KeyChar == (char)Keys.Return)
             {
                 btnSearch_Click(null, null);
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (query != null)
+            {
+                searchThread?.Abort();
+                searchThread = new Thread(DisplayUsers);
+                searchThread.Start(txtSearch.Text);
             }
         }
     }

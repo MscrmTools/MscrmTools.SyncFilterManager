@@ -3,6 +3,7 @@
 // CODEPLEX: http://xrmtoolbox.codeplex.com
 // BLOG: http://mscrmtools.blogspot.com
 
+using McTools.Xrm.Connection;
 using Microsoft.Xrm.Sdk;
 using MscrmTools.SyncFilterManager.AppCode;
 using MscrmTools.SyncFilterManager.Forms;
@@ -17,6 +18,12 @@ namespace MscrmTools.SyncFilterManager
 {
     public partial class MainControl : PluginControlBase, IGitHubPlugin, IHelpPlugin
     {
+        #region variables
+
+        private List<Entity> savedQueries;
+
+        #endregion variables
+
         #region Constructor
 
         /// <summary>
@@ -30,6 +37,13 @@ namespace MscrmTools.SyncFilterManager
         #endregion Constructor
 
         #region Methods
+
+        public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
+        {
+            crmUserList1.Service = newService;
+
+            base.UpdateConnection(newService, detail, actionName, parameter);
+        }
 
         private void TsbCloseClick(object sender, EventArgs e)
         {
@@ -70,7 +84,7 @@ namespace MscrmTools.SyncFilterManager
                     Work = (bw, e) =>
                     {
                         var rm = new RuleManager("userquery", Service, ConnectionDetail);
-                        rm.ResetUsersRulesFromDefault((List<Entity>) e.Argument, bw);
+                        rm.ResetUsersRulesFromDefault((List<Entity>)e.Argument, bw);
                     },
                     PostWorkCallBack = e =>
                     {
@@ -258,6 +272,12 @@ namespace MscrmTools.SyncFilterManager
 
         #endregion System Views
 
+        public string HelpUrl => "https://github.com/MscrmTools/MscrmTools.SyncFilterManager/wiki";
+
+        public string RepositoryName => "MscrmTools.SyncFilterManager";
+
+        public string UserName => "MscrmTools";
+
         private void chkDisplayOfflineFilters_CheckedChanged(object sender, EventArgs e)
         {
             usersLocalDataRulesView.DisplayViews(chkDisplayOutlookFilters.Checked, chkDisplayOfflineFilters.Checked);
@@ -336,9 +356,5 @@ namespace MscrmTools.SyncFilterManager
         {
             defaultLocalDataRulesView.RenameView();
         }
-
-        public string RepositoryName => "MscrmTools.SyncFilterManager";
-        public string UserName => "MscrmTools";
-        public string HelpUrl => "https://github.com/MscrmTools/MscrmTools.SyncFilterManager/wiki";
     }
 }

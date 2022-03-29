@@ -11,7 +11,7 @@
     <iconUrl>https://raw.githubusercontent.com/wiki/MscrmTools/XrmToolBox/Images/logo_0100.png</iconUrl>
     <description>Manage filters for offline, Outlook and server side synchronizations</description>
     <summary>Manage filters for offline, Outlook and server side synchronizations</summary>
-    <releaseNotes>Fixed NullReferenceException when applying a user filter to other users (#4, #5)</releaseNotes>
+    <releaseNotes>Improved user search and selection</releaseNotes>
     <tags>XrmToolBox Plugin SyncFilterManager</tags>
     <dependencies>
       <dependency id="XrmToolBox" version="1.2021.1.44" />
