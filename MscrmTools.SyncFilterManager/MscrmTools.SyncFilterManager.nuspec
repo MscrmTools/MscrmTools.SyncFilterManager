@@ -11,7 +11,10 @@
     <iconUrl>https://raw.githubusercontent.com/wiki/MscrmTools/XrmToolBox/Images/logo_0100.png</iconUrl>
     <description>Manage filters for offline, Outlook and server side synchronizations</description>
     <summary>Manage filters for offline, Outlook and server side synchronizations</summary>
-    <releaseNotes>Improved user search and selection</releaseNotes>
+    <releaseNotes>
+      Improved user search and selection
+      Improved loading of system views by allowing selection of solution
+    </releaseNotes>
     <tags>XrmToolBox Plugin SyncFilterManager</tags>
     <dependencies>
       <dependency id="XrmToolBox" version="1.2021.1.44" />

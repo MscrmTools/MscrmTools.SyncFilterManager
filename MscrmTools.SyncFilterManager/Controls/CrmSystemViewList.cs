@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
 
@@ -20,10 +21,13 @@ namespace MscrmTools.SyncFilterManager.Controls
         private ConnectionDetail connectionDetail;
         private string currentAttributeGroup;
         private string entityName;
+        private List<ListViewGroup> groups = new List<ListViewGroup>();
         private List<ListViewGroup> groupsCache;
         private List<ListViewItem> itemsCache;
+
         private Panel loadingPanel;
         private IOrganizationService service;
+        private List<ListViewItem> views = new List<ListViewItem>();
 
         #endregion Variables
 
@@ -73,6 +77,11 @@ namespace MscrmTools.SyncFilterManager.Controls
 
         #region Load System views
 
+        public List<Entity> GetSelectedSystemView()
+        {
+            return (from ListViewItem lvi in lvViews.SelectedItems select (Entity)lvi.Tag).ToList();
+        }
+
         public void LoadSystemViews(List<Entity> users = null, string returnedTypeExpected = null)
         {
             if (!DisplaySystemView && !DisplayRulesTemplate && !DisplaySystemRules && !lvViews.Columns.ContainsKey("User"))
@@ -107,6 +116,19 @@ namespace MscrmTools.SyncFilterManager.Controls
                 lvViews.ShowGroups = true;
             }
 
+            List<Entity> solutions = new List<Entity>();
+
+            if (returnedTypeExpected == null)
+            {
+                var sp = new SolutionPicker(service);
+                if (sp.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+
+                solutions = sp.SelectedSolutions;
+            }
+
             lvViews.Items.Clear();
 
             loadingPanel = InformationPanel.GetInformationPanel(this, "Retrieving items...", 340, 120);
@@ -115,12 +137,121 @@ namespace MscrmTools.SyncFilterManager.Controls
             bw.DoWork += bw_DoWork;
             bw.ProgressChanged += bw_ProgressChanged;
             bw.RunWorkerCompleted += bw_RunWorkerCompleted;
-            bw.RunWorkerAsync(new object[] { users, returnedTypeExpected });
+            bw.RunWorkerAsync(new object[] { users, returnedTypeExpected, solutions });
+        }
+
+        internal void DefineAsDefault()
+        {
+            var currentItem = GetSelectedSystemView().FirstOrDefault();
+
+            if (currentItem != null)
+            {
+                var associatedItems = (from ListViewItem lvi in lvViews.Items select (Entity)lvi.Tag).ToList().Where(e => e.GetAttributeValue<string>("returnedtypecode") == currentItem.GetAttributeValue<string>("returnedtypecode"));
+
+                if (!currentItem.GetAttributeValue<bool>("isdefault"))
+                {
+                    loadingPanel = InformationPanel.GetInformationPanel(this, "Removing default status to previous default record", 340, 120);
+
+                    var bwApplyDefault = new BackgroundWorker { WorkerReportsProgress = true };
+                    bwApplyDefault.DoWork += bwApplyDefault_DoWork;
+                    bwApplyDefault.ProgressChanged += bwApplyDefault_ProgressChanged;
+                    bwApplyDefault.RunWorkerCompleted += bwApplyDefault_RunWorkerCompleted;
+                    bwApplyDefault.RunWorkerAsync(new object[] { currentItem, associatedItems });
+                }
+            }
+        }
+
+        internal void DisplayViews(bool displayOutlookFilters, bool displayOfflineFilters)
+        {
+            if (!DisplayRulesTemplate && !DisplaySystemView && itemsCache != null)
+            {
+                DisplayOutlookFilter = displayOutlookFilters;
+                DisplayOfflineFilter = displayOfflineFilters;
+
+                lvViews.Items.Clear();
+
+                lvViews.Items.AddRange(itemsCache.Where(x =>
+                                    ((Entity)x.Tag).GetAttributeValue<int>("querytype") == 16 && displayOfflineFilters
+                                    || ((Entity)x.Tag).GetAttributeValue<int>("querytype") == 256 && displayOutlookFilters
+                                    ).ToArray());
+
+                GroupBy(currentAttributeGroup);
+            }
+        }
+
+        internal void GroupBy(string attribute)
+        {
+            currentAttributeGroup = attribute;
+            var newGroups = new List<ListViewGroup>();
+            var items = new List<ListViewItem>();
+
+            var currentItems = lvViews.Items;
+
+            lvViews.Groups.Clear();
+
+            foreach (ListViewItem item in currentItems)
+            {
+                lvViews.Items.Remove(item);
+
+                var rule = (Entity)item.Tag;
+                string groupCriteria;
+                if (rule[attribute] is EntityReference)
+                {
+                    groupCriteria = rule.GetAttributeValue<EntityReference>(attribute).Name;
+                }
+                else
+                {
+                    groupCriteria = rule.GetAttributeValue<string>(attribute);
+                }
+
+                var newGroup = newGroups.FirstOrDefault(g => g.Name == groupCriteria);
+                if (newGroup == null)
+                {
+                    newGroup = new ListViewGroup(groupCriteria, groupCriteria);
+                    newGroups.Add(newGroup);
+                }
+
+                item.Group = newGroup;
+                items.Add(item);
+            }
+
+            newGroups.Sort(new ListViewGroupHeaderSorter(DisplaySystemView || !DisplayRulesTemplate && !DisplaySystemView));
+
+            lvViews.Groups.AddRange(newGroups.ToArray());
+            lvViews.Items.AddRange(items.ToArray());
+        }
+
+        private void ApplyTemplateToUsers(List<Guid> rulesIds, string question, RuleManager rm, BackgroundWorker worker)
+        {
+            worker.ReportProgress(0, "Waiting for input...");
+
+            if (
+               MessageBox.Show(this, question, "Question",
+                   MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                var usDialog = new UserSelectionDialog(service);
+                if (usDialog.ShowDialog() == DialogResult.OK)
+                {
+                    foreach (var user in usDialog.SelectedUsers)
+                    {
+                        worker.ReportProgress(0, string.Format("Applying rule(s) to user(s) '{0}'", user.GetAttributeValue<string>("fullname")));
+
+                        var erc = new EntityReferenceCollection();
+                        foreach (var ruleId in rulesIds)
+                        {
+                            erc.Add(new EntityReference("savedquery", ruleId));
+                        }
+
+                        rm.ApplyRulesToUser(erc, user.Id, true);
+                    }
+                }
+            }
         }
 
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             var arguments = (object[])e.Argument;
+            var solutions = (List<Entity>)arguments[2];
             var rm = new RuleManager(entityName, service, connectionDetail);
 
             if (DisplaySystemView)
@@ -139,7 +270,17 @@ namespace MscrmTools.SyncFilterManager.Controls
                 };
 
                 if (arguments.Length > 1 && arguments[1] != null)
+                {
                     query.Criteria.AddCondition("returnedtypecode", ConditionOperator.Equal, arguments[1].ToString());
+                }
+                else if (solutions.Count > 0)
+                {
+                    var emds = MetadataHelper.RetrieveEntities(service, solutions.Select(s => s.Id).ToList());
+                    if (emds.Count > 0)
+                    {
+                        query.Criteria.AddCondition("returnedtypecode", ConditionOperator.In, emds.Select(emd => emd.LogicalName).ToArray());
+                    }
+                }
 
                 e.Result = service.RetrieveMultiple(query);
             }
@@ -178,9 +319,9 @@ namespace MscrmTools.SyncFilterManager.Controls
             }
             else
             {
-                var views = new List<ListViewItem>();
                 var viewsForCache = new List<ListViewItem>();
-                var groups = new List<ListViewGroup>();
+                views.Clear();
+                groups.Clear();
 
                 foreach (var view in ((EntityCollection)e.Result).Entities)
                 {
@@ -254,12 +395,22 @@ namespace MscrmTools.SyncFilterManager.Controls
                     groupsCache.Sort(new ListViewGroupHeaderSorter(DisplaySystemView || !DisplayRulesTemplate && !DisplaySystemView && !DisplaySystemRules));
                 }
 
+                DoDisplayItems();
+            }
+        }
+
+        private void DoDisplayItems(object filter = null)
+        {
+            Invoke(new Action(() =>
+            {
+                lvViews.Items.Clear();
+
                 lvViews.Groups.AddRange(groups.ToArray());
-                lvViews.Items.AddRange(views.ToArray());
+                lvViews.Items.AddRange(views.Where(i => filter == null || i.Text.IndexOf(filter?.ToString(), StringComparison.InvariantCultureIgnoreCase) >= 0).ToArray());
 
                 lvViews.Sorting = SortOrder.Ascending;
                 lvViews.ListViewItemSorter = new ListViewItemComparer(2, lvViews.Sorting);
-            }
+            }));
         }
 
         #endregion Load System views
@@ -314,6 +465,8 @@ namespace MscrmTools.SyncFilterManager.Controls
 
         #region Disable Selected Rules
 
+        private Thread searchThread;
+
         public void DisableSelectedRules()
         {
             loadingPanel = InformationPanel.GetInformationPanel(this, "Deactivating selected records...", 340, 120);
@@ -322,6 +475,13 @@ namespace MscrmTools.SyncFilterManager.Controls
             bwDisable.DoWork += bwDisable_DoWork;
             bwDisable.RunWorkerCompleted += bwDisable_RunWorkerCompleted;
             bwDisable.RunWorkerAsync(lvViews.SelectedItems);
+        }
+
+        internal void Search(string text)
+        {
+            searchThread?.Abort();
+            searchThread = new Thread(DoDisplayItems);
+            searchThread.Start(text);
         }
 
         private void bwDisable_DoWork(object sender, DoWorkEventArgs e)
@@ -741,119 +901,6 @@ namespace MscrmTools.SyncFilterManager.Controls
         }
 
         #endregion Rename view
-
-        public List<Entity> GetSelectedSystemView()
-        {
-            return (from ListViewItem lvi in lvViews.SelectedItems select (Entity)lvi.Tag).ToList();
-        }
-
-        internal void DefineAsDefault()
-        {
-            var currentItem = GetSelectedSystemView().FirstOrDefault();
-
-            if (currentItem != null)
-            {
-                var associatedItems = (from ListViewItem lvi in lvViews.Items select (Entity)lvi.Tag).ToList().Where(e => e.GetAttributeValue<string>("returnedtypecode") == currentItem.GetAttributeValue<string>("returnedtypecode"));
-
-                if (!currentItem.GetAttributeValue<bool>("isdefault"))
-                {
-                    loadingPanel = InformationPanel.GetInformationPanel(this, "Removing default status to previous default record", 340, 120);
-
-                    var bwApplyDefault = new BackgroundWorker { WorkerReportsProgress = true };
-                    bwApplyDefault.DoWork += bwApplyDefault_DoWork;
-                    bwApplyDefault.ProgressChanged += bwApplyDefault_ProgressChanged;
-                    bwApplyDefault.RunWorkerCompleted += bwApplyDefault_RunWorkerCompleted;
-                    bwApplyDefault.RunWorkerAsync(new object[] { currentItem, associatedItems });
-                }
-            }
-        }
-
-        internal void DisplayViews(bool displayOutlookFilters, bool displayOfflineFilters)
-        {
-            if (!DisplayRulesTemplate && !DisplaySystemView && itemsCache != null)
-            {
-                DisplayOutlookFilter = displayOutlookFilters;
-                DisplayOfflineFilter = displayOfflineFilters;
-
-                lvViews.Items.Clear();
-
-                lvViews.Items.AddRange(itemsCache.Where(x =>
-                                    ((Entity)x.Tag).GetAttributeValue<int>("querytype") == 16 && displayOfflineFilters
-                                    || ((Entity)x.Tag).GetAttributeValue<int>("querytype") == 256 && displayOutlookFilters
-                                    ).ToArray());
-
-                GroupBy(currentAttributeGroup);
-            }
-        }
-
-        internal void GroupBy(string attribute)
-        {
-            currentAttributeGroup = attribute;
-            var newGroups = new List<ListViewGroup>();
-            var items = new List<ListViewItem>();
-
-            var currentItems = lvViews.Items;
-
-            lvViews.Groups.Clear();
-
-            foreach (ListViewItem item in currentItems)
-            {
-                lvViews.Items.Remove(item);
-
-                var rule = (Entity)item.Tag;
-                string groupCriteria;
-                if (rule[attribute] is EntityReference)
-                {
-                    groupCriteria = rule.GetAttributeValue<EntityReference>(attribute).Name;
-                }
-                else
-                {
-                    groupCriteria = rule.GetAttributeValue<string>(attribute);
-                }
-
-                var newGroup = newGroups.FirstOrDefault(g => g.Name == groupCriteria);
-                if (newGroup == null)
-                {
-                    newGroup = new ListViewGroup(groupCriteria, groupCriteria);
-                    newGroups.Add(newGroup);
-                }
-
-                item.Group = newGroup;
-                items.Add(item);
-            }
-
-            newGroups.Sort(new ListViewGroupHeaderSorter(DisplaySystemView || !DisplayRulesTemplate && !DisplaySystemView));
-
-            lvViews.Groups.AddRange(newGroups.ToArray());
-            lvViews.Items.AddRange(items.ToArray());
-        }
-
-        private void ApplyTemplateToUsers(List<Guid> rulesIds, string question, RuleManager rm, BackgroundWorker worker)
-        {
-            worker.ReportProgress(0, "Waiting for input...");
-
-            if (
-               MessageBox.Show(this, question, "Question",
-                   MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                var usDialog = new UserSelectionDialog(service);
-                if (usDialog.ShowDialog() == DialogResult.OK)
-                {
-                    foreach (var user in usDialog.SelectedUsers)
-                    {
-                        worker.ReportProgress(0, string.Format("Applying rule(s) to user(s) '{0}'", user.GetAttributeValue<string>("fullname")));
-
-                        var erc = new EntityReferenceCollection();
-                        foreach (var ruleId in rulesIds)
-                        {
-                            erc.Add(new EntityReference("savedquery", ruleId));
-                        }
-
-                        rm.ApplyRulesToUser(erc, user.Id, true);
-                    }
-                }
-            }
-        }
 
         private void bwApplyDefault_DoWork(object sender, DoWorkEventArgs e)
         {

@@ -91,6 +91,9 @@
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsmiUpdateSystemFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiUpdateFilterTemplate = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+            this.tslSearch = new System.Windows.Forms.ToolStripLabel();
+            this.txtSystemViewSearch = new System.Windows.Forms.ToolStripTextBox();
             this.tabPageUsers = new System.Windows.Forms.TabPage();
             this.crmUserList1 = new MscrmTools.SyncFilterManager.Controls.CrmUserList();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -118,8 +121,7 @@
             this.tsbClose});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStripMenu.Size = new System.Drawing.Size(1366, 25);
+            this.toolStripMenu.Size = new System.Drawing.Size(1639, 46);
             this.toolStripMenu.TabIndex = 2;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -129,7 +131,7 @@
             this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
             this.tsbClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(23, 22);
+            this.tsbClose.Size = new System.Drawing.Size(34, 41);
             this.tsbClose.Text = "Close this tool";
             this.tsbClose.Click += new System.EventHandler(this.TsbCloseClick);
             // 
@@ -178,10 +180,10 @@
             this.systemRulesListView.DisplaySystemView = false;
             this.systemRulesListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.systemRulesListView.EntityName = "savedquery";
-            this.systemRulesListView.Location = new System.Drawing.Point(4, 37);
+            this.systemRulesListView.Location = new System.Drawing.Point(4, 39);
             this.systemRulesListView.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.systemRulesListView.Name = "systemRulesListView";
-            this.systemRulesListView.Size = new System.Drawing.Size(1342, 800);
+            this.systemRulesListView.Size = new System.Drawing.Size(1342, 798);
             this.systemRulesListView.TabIndex = 2;
             // 
             // toolStrip5
@@ -196,8 +198,7 @@
             this.tsbShowFetchXmlSystemRules});
             this.toolStrip5.Location = new System.Drawing.Point(4, 5);
             this.toolStrip5.Name = "toolStrip5";
-            this.toolStrip5.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip5.Size = new System.Drawing.Size(1342, 32);
+            this.toolStrip5.Size = new System.Drawing.Size(1342, 34);
             this.toolStrip5.TabIndex = 0;
             this.toolStrip5.Text = "toolStrip5";
             // 
@@ -206,7 +207,7 @@
             this.tsbLoadSystemSynchronizationFilter.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoadSystemSynchronizationFilter.Image")));
             this.tsbLoadSystemSynchronizationFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLoadSystemSynchronizationFilter.Name = "tsbLoadSystemSynchronizationFilter";
-            this.tsbLoadSystemSynchronizationFilter.Size = new System.Drawing.Size(316, 29);
+            this.tsbLoadSystemSynchronizationFilter.Size = new System.Drawing.Size(314, 41);
             this.tsbLoadSystemSynchronizationFilter.Text = "Load System Synchronization Filters";
             this.tsbLoadSystemSynchronizationFilter.ToolTipText = "Load templates used to synchronize Outlook and Offline items";
             this.tsbLoadSystemSynchronizationFilter.Click += new System.EventHandler(this.tsbLoadSystemSynchronizationFilter_Click);
@@ -214,7 +215,7 @@
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 46);
             // 
             // tsbSystemFilterProperties
             // 
@@ -222,21 +223,21 @@
             this.tsbSystemFilterProperties.Image = ((System.Drawing.Image)(resources.GetObject("tsbSystemFilterProperties.Image")));
             this.tsbSystemFilterProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSystemFilterProperties.Name = "tsbSystemFilterProperties";
-            this.tsbSystemFilterProperties.Size = new System.Drawing.Size(23, 29);
+            this.tsbSystemFilterProperties.Size = new System.Drawing.Size(34, 41);
             this.tsbSystemFilterProperties.Text = "Properties";
             this.tsbSystemFilterProperties.Click += new System.EventHandler(this.tsbSystemFilterProperties_Click);
             // 
             // toolStripSeparator12
             // 
             this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator12.Size = new System.Drawing.Size(6, 46);
             // 
             // tsbSystemRuleDelete
             // 
             this.tsbSystemRuleDelete.Image = ((System.Drawing.Image)(resources.GetObject("tsbSystemRuleDelete.Image")));
             this.tsbSystemRuleDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbSystemRuleDelete.Name = "tsbSystemRuleDelete";
-            this.tsbSystemRuleDelete.Size = new System.Drawing.Size(82, 29);
+            this.tsbSystemRuleDelete.Size = new System.Drawing.Size(82, 41);
             this.tsbSystemRuleDelete.Text = "Delete";
             this.tsbSystemRuleDelete.ToolTipText = "Delete selected default local data rule(s)";
             this.tsbSystemRuleDelete.Click += new System.EventHandler(this.tsbSystemRuleDelete_Click);
@@ -244,14 +245,14 @@
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 46);
             // 
             // tsbShowFetchXmlSystemRules
             // 
             this.tsbShowFetchXmlSystemRules.Image = ((System.Drawing.Image)(resources.GetObject("tsbShowFetchXmlSystemRules.Image")));
             this.tsbShowFetchXmlSystemRules.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbShowFetchXmlSystemRules.Name = "tsbShowFetchXmlSystemRules";
-            this.tsbShowFetchXmlSystemRules.Size = new System.Drawing.Size(154, 29);
+            this.tsbShowFetchXmlSystemRules.Size = new System.Drawing.Size(154, 41);
             this.tsbShowFetchXmlSystemRules.Text = "Show FetchXml";
             this.tsbShowFetchXmlSystemRules.ToolTipText = "Display FetchXml query used for the selected rule";
             this.tsbShowFetchXmlSystemRules.Click += new System.EventHandler(this.tsbShowFetchXmlSystemRules_Click);
@@ -278,10 +279,10 @@
             this.defaultLocalDataRulesView.DisplaySystemView = false;
             this.defaultLocalDataRulesView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.defaultLocalDataRulesView.EntityName = "savedquery";
-            this.defaultLocalDataRulesView.Location = new System.Drawing.Point(4, 37);
+            this.defaultLocalDataRulesView.Location = new System.Drawing.Point(4, 39);
             this.defaultLocalDataRulesView.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.defaultLocalDataRulesView.Name = "defaultLocalDataRulesView";
-            this.defaultLocalDataRulesView.Size = new System.Drawing.Size(1342, 800);
+            this.defaultLocalDataRulesView.Size = new System.Drawing.Size(1342, 798);
             this.defaultLocalDataRulesView.TabIndex = 7;
             // 
             // toolStrip4
@@ -299,8 +300,7 @@
             this.tsbShowFetchXmlDefault});
             this.toolStrip4.Location = new System.Drawing.Point(4, 5);
             this.toolStrip4.Name = "toolStrip4";
-            this.toolStrip4.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip4.Size = new System.Drawing.Size(1342, 32);
+            this.toolStrip4.Size = new System.Drawing.Size(1342, 34);
             this.toolStrip4.TabIndex = 6;
             this.toolStrip4.Text = "toolStrip4";
             // 
@@ -309,7 +309,7 @@
             this.tsbLoadDefaultLocalDataRules.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoadDefaultLocalDataRules.Image")));
             this.tsbLoadDefaultLocalDataRules.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLoadDefaultLocalDataRules.Name = "tsbLoadDefaultLocalDataRules";
-            this.tsbLoadDefaultLocalDataRules.Size = new System.Drawing.Size(331, 29);
+            this.tsbLoadDefaultLocalDataRules.Size = new System.Drawing.Size(336, 29);
             this.tsbLoadDefaultLocalDataRules.Text = "Load Synchronization Filter Templates";
             this.tsbLoadDefaultLocalDataRules.ToolTipText = "Load templates used to synchronize Outlook and Offline items";
             this.tsbLoadDefaultLocalDataRules.Click += new System.EventHandler(this.tsbLoadDefaultLocalDataRules_Click);
@@ -317,7 +317,7 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbTemplateFilterProperties
             // 
@@ -325,21 +325,21 @@
             this.tsbTemplateFilterProperties.Image = ((System.Drawing.Image)(resources.GetObject("tsbTemplateFilterProperties.Image")));
             this.tsbTemplateFilterProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbTemplateFilterProperties.Name = "tsbTemplateFilterProperties";
-            this.tsbTemplateFilterProperties.Size = new System.Drawing.Size(23, 29);
+            this.tsbTemplateFilterProperties.Size = new System.Drawing.Size(34, 29);
             this.tsbTemplateFilterProperties.Text = "Properties";
             this.tsbTemplateFilterProperties.Click += new System.EventHandler(this.tsbTemplateFilterProperties_Click);
             // 
             // toolStripSeparator13
             // 
             this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator13.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbDefaultDelete
             // 
             this.tsbDefaultDelete.Image = ((System.Drawing.Image)(resources.GetObject("tsbDefaultDelete.Image")));
             this.tsbDefaultDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbDefaultDelete.Name = "tsbDefaultDelete";
-            this.tsbDefaultDelete.Size = new System.Drawing.Size(82, 29);
+            this.tsbDefaultDelete.Size = new System.Drawing.Size(90, 29);
             this.tsbDefaultDelete.Text = "Delete";
             this.tsbDefaultDelete.ToolTipText = "Delete selected default local data rule(s)";
             this.tsbDefaultDelete.Click += new System.EventHandler(this.tsbDefaultDelete_Click);
@@ -349,21 +349,21 @@
             this.tsbDefineAsDefault.Image = ((System.Drawing.Image)(resources.GetObject("tsbDefineAsDefault.Image")));
             this.tsbDefineAsDefault.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbDefineAsDefault.Name = "tsbDefineAsDefault";
-            this.tsbDefineAsDefault.Size = new System.Drawing.Size(165, 29);
+            this.tsbDefineAsDefault.Size = new System.Drawing.Size(173, 29);
             this.tsbDefineAsDefault.Text = "Define as default";
             this.tsbDefineAsDefault.Click += new System.EventHandler(this.tsbDefineAsDefault_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbApplyToUsers
             // 
             this.tsbApplyToUsers.Image = ((System.Drawing.Image)(resources.GetObject("tsbApplyToUsers.Image")));
             this.tsbApplyToUsers.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbApplyToUsers.Name = "tsbApplyToUsers";
-            this.tsbApplyToUsers.Size = new System.Drawing.Size(147, 29);
+            this.tsbApplyToUsers.Size = new System.Drawing.Size(155, 29);
             this.tsbApplyToUsers.Text = "Apply to users";
             this.tsbApplyToUsers.ToolTipText = "Select one or more users. Individual synchronization rules of these users will be" +
     " created or overriden by selected rules";
@@ -372,14 +372,14 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbShowFetchXmlDefault
             // 
             this.tsbShowFetchXmlDefault.Image = ((System.Drawing.Image)(resources.GetObject("tsbShowFetchXmlDefault.Image")));
             this.tsbShowFetchXmlDefault.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbShowFetchXmlDefault.Name = "tsbShowFetchXmlDefault";
-            this.tsbShowFetchXmlDefault.Size = new System.Drawing.Size(154, 29);
+            this.tsbShowFetchXmlDefault.Size = new System.Drawing.Size(162, 29);
             this.tsbShowFetchXmlDefault.Text = "Show FetchXml";
             this.tsbShowFetchXmlDefault.ToolTipText = "Display FetchXml query used for the selected rule";
             this.tsbShowFetchXmlDefault.Click += new System.EventHandler(this.tsbShowFetchXmlDefault_Click);
@@ -407,10 +407,10 @@
             this.usersLocalDataRulesView.DisplaySystemView = false;
             this.usersLocalDataRulesView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.usersLocalDataRulesView.EntityName = "userquery";
-            this.usersLocalDataRulesView.Location = new System.Drawing.Point(4, 73);
+            this.usersLocalDataRulesView.Location = new System.Drawing.Point(4, 75);
             this.usersLocalDataRulesView.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.usersLocalDataRulesView.Name = "usersLocalDataRulesView";
-            this.usersLocalDataRulesView.Size = new System.Drawing.Size(1342, 764);
+            this.usersLocalDataRulesView.Size = new System.Drawing.Size(1342, 762);
             this.usersLocalDataRulesView.TabIndex = 12;
             // 
             // panel1
@@ -418,7 +418,7 @@
             this.panel1.Controls.Add(this.chkDisplayOfflineFilters);
             this.panel1.Controls.Add(this.chkDisplayOutlookFilters);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(4, 37);
+            this.panel1.Location = new System.Drawing.Point(4, 39);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1342, 36);
@@ -464,8 +464,7 @@
             this.tsddbGroupBy});
             this.toolStrip3.Location = new System.Drawing.Point(4, 5);
             this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip3.Size = new System.Drawing.Size(1342, 32);
+            this.toolStrip3.Size = new System.Drawing.Size(1342, 34);
             this.toolStrip3.TabIndex = 4;
             this.toolStrip3.Text = "toolStrip3";
             // 
@@ -478,39 +477,39 @@
             this.tsddbLoadUsersLocalDataRules.Image = ((System.Drawing.Image)(resources.GetObject("tsddbLoadUsersLocalDataRules.Image")));
             this.tsddbLoadUsersLocalDataRules.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbLoadUsersLocalDataRules.Name = "tsddbLoadUsersLocalDataRules";
-            this.tsddbLoadUsersLocalDataRules.Size = new System.Drawing.Size(310, 29);
+            this.tsddbLoadUsersLocalDataRules.Size = new System.Drawing.Size(322, 29);
             this.tsddbLoadUsersLocalDataRules.Text = "Load Users Synchronization Filters";
             // 
             // forSpecificUsersToolStripMenuItem
             // 
             this.forSpecificUsersToolStripMenuItem.Name = "forSpecificUsersToolStripMenuItem";
-            this.forSpecificUsersToolStripMenuItem.Size = new System.Drawing.Size(219, 30);
+            this.forSpecificUsersToolStripMenuItem.Size = new System.Drawing.Size(249, 34);
             this.forSpecificUsersToolStripMenuItem.Text = "For specific users";
             this.forSpecificUsersToolStripMenuItem.Click += new System.EventHandler(this.forSpecificUsersToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(216, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(246, 6);
             // 
             // loadAllUsersLocalDataRulesToolStripMenuItem
             // 
             this.loadAllUsersLocalDataRulesToolStripMenuItem.Name = "loadAllUsersLocalDataRulesToolStripMenuItem";
-            this.loadAllUsersLocalDataRulesToolStripMenuItem.Size = new System.Drawing.Size(219, 30);
+            this.loadAllUsersLocalDataRulesToolStripMenuItem.Size = new System.Drawing.Size(249, 34);
             this.loadAllUsersLocalDataRulesToolStripMenuItem.Text = "For all users";
             this.loadAllUsersLocalDataRulesToolStripMenuItem.Click += new System.EventHandler(this.tsbLoadUsersLocalDataRules_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbUserRuleEnable
             // 
             this.tsbUserRuleEnable.Image = ((System.Drawing.Image)(resources.GetObject("tsbUserRuleEnable.Image")));
             this.tsbUserRuleEnable.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbUserRuleEnable.Name = "tsbUserRuleEnable";
-            this.tsbUserRuleEnable.Size = new System.Drawing.Size(84, 29);
+            this.tsbUserRuleEnable.Size = new System.Drawing.Size(92, 29);
             this.tsbUserRuleEnable.Text = "Enable";
             this.tsbUserRuleEnable.ToolTipText = "Enable selected rule(s)";
             this.tsbUserRuleEnable.Click += new System.EventHandler(this.tsbUserRuleEnable_Click);
@@ -520,7 +519,7 @@
             this.tsbUserRuleDisable.Image = ((System.Drawing.Image)(resources.GetObject("tsbUserRuleDisable.Image")));
             this.tsbUserRuleDisable.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbUserRuleDisable.Name = "tsbUserRuleDisable";
-            this.tsbUserRuleDisable.Size = new System.Drawing.Size(90, 29);
+            this.tsbUserRuleDisable.Size = new System.Drawing.Size(98, 29);
             this.tsbUserRuleDisable.Text = "Disable";
             this.tsbUserRuleDisable.ToolTipText = "Disable selected rule(s)";
             this.tsbUserRuleDisable.Click += new System.EventHandler(this.tsbUserRuleDisable_Click);
@@ -530,7 +529,7 @@
             this.tsbDeleteUserRule.Image = ((System.Drawing.Image)(resources.GetObject("tsbDeleteUserRule.Image")));
             this.tsbDeleteUserRule.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbDeleteUserRule.Name = "tsbDeleteUserRule";
-            this.tsbDeleteUserRule.Size = new System.Drawing.Size(82, 29);
+            this.tsbDeleteUserRule.Size = new System.Drawing.Size(90, 29);
             this.tsbDeleteUserRule.Text = "Delete";
             this.tsbDeleteUserRule.ToolTipText = "Delete selected user local data rule(s)";
             this.tsbDeleteUserRule.Click += new System.EventHandler(this.tsbDeleteUserRule_Click);
@@ -538,14 +537,14 @@
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbShowFetchXmlUser
             // 
             this.tsbShowFetchXmlUser.Image = ((System.Drawing.Image)(resources.GetObject("tsbShowFetchXmlUser.Image")));
             this.tsbShowFetchXmlUser.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbShowFetchXmlUser.Name = "tsbShowFetchXmlUser";
-            this.tsbShowFetchXmlUser.Size = new System.Drawing.Size(154, 29);
+            this.tsbShowFetchXmlUser.Size = new System.Drawing.Size(162, 29);
             this.tsbShowFetchXmlUser.Text = "Show FetchXml";
             this.tsbShowFetchXmlUser.ToolTipText = "Display FetchXml query used for the selected rule";
             this.tsbShowFetchXmlUser.Click += new System.EventHandler(this.tsbShowFetchXmlUser_Click);
@@ -553,7 +552,7 @@
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 34);
             // 
             // tsddbGroupBy
             // 
@@ -565,14 +564,14 @@
             this.tsddbGroupBy.Image = ((System.Drawing.Image)(resources.GetObject("tsddbGroupBy.Image")));
             this.tsddbGroupBy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsddbGroupBy.Name = "tsddbGroupBy";
-            this.tsddbGroupBy.Size = new System.Drawing.Size(100, 29);
+            this.tsddbGroupBy.Size = new System.Drawing.Size(105, 29);
             this.tsddbGroupBy.Text = "Group by";
             // 
             // tsmiGroupByRule
             // 
             this.tsmiGroupByRule.Image = ((System.Drawing.Image)(resources.GetObject("tsmiGroupByRule.Image")));
             this.tsmiGroupByRule.Name = "tsmiGroupByRule";
-            this.tsmiGroupByRule.Size = new System.Drawing.Size(199, 30);
+            this.tsmiGroupByRule.Size = new System.Drawing.Size(227, 34);
             this.tsmiGroupByRule.Text = "Rule";
             this.tsmiGroupByRule.Click += new System.EventHandler(this.tsmiGroupByRule_Click);
             // 
@@ -580,7 +579,7 @@
             // 
             this.tsmiGroupByReturnedType.Image = ((System.Drawing.Image)(resources.GetObject("tsmiGroupByReturnedType.Image")));
             this.tsmiGroupByReturnedType.Name = "tsmiGroupByReturnedType";
-            this.tsmiGroupByReturnedType.Size = new System.Drawing.Size(199, 30);
+            this.tsmiGroupByReturnedType.Size = new System.Drawing.Size(227, 34);
             this.tsmiGroupByReturnedType.Text = "Returned Type";
             this.tsmiGroupByReturnedType.Click += new System.EventHandler(this.tsmiGroupByReturnedType_Click);
             // 
@@ -588,7 +587,7 @@
             // 
             this.tsmiGroupByUser.Image = ((System.Drawing.Image)(resources.GetObject("tsmiGroupByUser.Image")));
             this.tsmiGroupByUser.Name = "tsmiGroupByUser";
-            this.tsmiGroupByUser.Size = new System.Drawing.Size(199, 30);
+            this.tsmiGroupByUser.Size = new System.Drawing.Size(227, 34);
             this.tsmiGroupByUser.Text = "User";
             this.tsmiGroupByUser.Click += new System.EventHandler(this.tsmiGroupByUser_Click);
             // 
@@ -614,10 +613,10 @@
             this.crmSystemViewsList.DisplaySystemView = true;
             this.crmSystemViewsList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crmSystemViewsList.EntityName = "savedquery";
-            this.crmSystemViewsList.Location = new System.Drawing.Point(4, 37);
+            this.crmSystemViewsList.Location = new System.Drawing.Point(4, 39);
             this.crmSystemViewsList.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.crmSystemViewsList.Name = "crmSystemViewsList";
-            this.crmSystemViewsList.Size = new System.Drawing.Size(1342, 800);
+            this.crmSystemViewsList.Size = new System.Drawing.Size(1342, 798);
             this.crmSystemViewsList.TabIndex = 4;
             // 
             // toolStrip2
@@ -628,11 +627,13 @@
             this.tsbShowFetchXmlView,
             this.toolStripSeparator9,
             this.toolStripDropDownButton1,
-            this.toolStripDropDownButton2});
+            this.toolStripDropDownButton2,
+            this.toolStripSeparator15,
+            this.tslSearch,
+            this.txtSystemViewSearch});
             this.toolStrip2.Location = new System.Drawing.Point(4, 5);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip2.Size = new System.Drawing.Size(1342, 32);
+            this.toolStrip2.Size = new System.Drawing.Size(1342, 34);
             this.toolStrip2.TabIndex = 3;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -641,21 +642,21 @@
             this.tsbLoadSystemViews.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoadSystemViews.Image")));
             this.tsbLoadSystemViews.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbLoadSystemViews.Name = "tsbLoadSystemViews";
-            this.tsbLoadSystemViews.Size = new System.Drawing.Size(184, 29);
+            this.tsbLoadSystemViews.Size = new System.Drawing.Size(191, 29);
             this.tsbLoadSystemViews.Text = "Load System Views";
             this.tsbLoadSystemViews.Click += new System.EventHandler(this.tsbLoadSystemViews_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbShowFetchXmlView
             // 
             this.tsbShowFetchXmlView.Image = ((System.Drawing.Image)(resources.GetObject("tsbShowFetchXmlView.Image")));
             this.tsbShowFetchXmlView.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbShowFetchXmlView.Name = "tsbShowFetchXmlView";
-            this.tsbShowFetchXmlView.Size = new System.Drawing.Size(154, 29);
+            this.tsbShowFetchXmlView.Size = new System.Drawing.Size(162, 29);
             this.tsbShowFetchXmlView.Text = "Show FetchXml";
             this.tsbShowFetchXmlView.ToolTipText = "Display FetchXml query used for the selected rule";
             this.tsbShowFetchXmlView.Click += new System.EventHandler(this.tsbShowFetchXmlView_Click);
@@ -663,7 +664,7 @@
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 34);
             // 
             // toolStripDropDownButton1
             // 
@@ -673,20 +674,20 @@
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(91, 29);
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(104, 29);
             this.toolStripDropDownButton1.Text = "Create";
             // 
             // tsmiCreateSystemFilterFromView
             // 
             this.tsmiCreateSystemFilterFromView.Name = "tsmiCreateSystemFilterFromView";
-            this.tsmiCreateSystemFilterFromView.Size = new System.Drawing.Size(510, 30);
+            this.tsmiCreateSystemFilterFromView.Size = new System.Drawing.Size(537, 34);
             this.tsmiCreateSystemFilterFromView.Text = "System Synchronization Filter from selected view(s)";
             this.tsmiCreateSystemFilterFromView.Click += new System.EventHandler(this.tsmiCreateSystemFilterFromView_Click);
             // 
             // tsmiCreateFilterTemplateFromView
             // 
             this.tsmiCreateFilterTemplateFromView.Name = "tsmiCreateFilterTemplateFromView";
-            this.tsmiCreateFilterTemplateFromView.Size = new System.Drawing.Size(510, 30);
+            this.tsmiCreateFilterTemplateFromView.Size = new System.Drawing.Size(537, 34);
             this.tsmiCreateFilterTemplateFromView.Text = "Synchronization Filter Template from selected views(s)";
             this.tsmiCreateFilterTemplateFromView.Click += new System.EventHandler(this.tsmiCreateFilterTemplateFromView_Click);
             // 
@@ -698,22 +699,40 @@
             this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
             this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
-            this.toolStripDropDownButton2.Size = new System.Drawing.Size(99, 29);
+            this.toolStripDropDownButton2.Size = new System.Drawing.Size(112, 29);
             this.toolStripDropDownButton2.Text = "Update";
             // 
             // tsmiUpdateSystemFilter
             // 
             this.tsmiUpdateSystemFilter.Name = "tsmiUpdateSystemFilter";
-            this.tsmiUpdateSystemFilter.Size = new System.Drawing.Size(484, 30);
+            this.tsmiUpdateSystemFilter.Size = new System.Drawing.Size(511, 34);
             this.tsmiUpdateSystemFilter.Text = "System Synchronization Filter from selected view";
             this.tsmiUpdateSystemFilter.Click += new System.EventHandler(this.tsmiUpdateSystemFilter_Click);
             // 
             // tsmiUpdateFilterTemplate
             // 
             this.tsmiUpdateFilterTemplate.Name = "tsmiUpdateFilterTemplate";
-            this.tsmiUpdateFilterTemplate.Size = new System.Drawing.Size(484, 30);
+            this.tsmiUpdateFilterTemplate.Size = new System.Drawing.Size(511, 34);
             this.tsmiUpdateFilterTemplate.Text = "Synchronization Filter Template from selected view";
             this.tsmiUpdateFilterTemplate.Click += new System.EventHandler(this.tsmiUpdateFilterTemplate_Click);
+            // 
+            // toolStripSeparator15
+            // 
+            this.toolStripSeparator15.Name = "toolStripSeparator15";
+            this.toolStripSeparator15.Size = new System.Drawing.Size(6, 34);
+            // 
+            // tslSearch
+            // 
+            this.tslSearch.Name = "tslSearch";
+            this.tslSearch.Size = new System.Drawing.Size(64, 29);
+            this.tslSearch.Text = "Search";
+            // 
+            // txtSystemViewSearch
+            // 
+            this.txtSystemViewSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtSystemViewSearch.Name = "txtSystemViewSearch";
+            this.txtSystemViewSearch.Size = new System.Drawing.Size(150, 34);
+            this.txtSystemViewSearch.TextChanged += new System.EventHandler(this.txtSystemViewSearch_TextChanged);
             // 
             // tabPageUsers
             // 
@@ -731,11 +750,11 @@
             // crmUserList1
             // 
             this.crmUserList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crmUserList1.Location = new System.Drawing.Point(4, 37);
+            this.crmUserList1.Location = new System.Drawing.Point(4, 39);
             this.crmUserList1.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.crmUserList1.Name = "crmUserList1";
             this.crmUserList1.SelectMultipleUsers = true;
-            this.crmUserList1.Size = new System.Drawing.Size(1342, 800);
+            this.crmUserList1.Size = new System.Drawing.Size(1342, 798);
             this.crmUserList1.TabIndex = 2;
             this.crmUserList1.OnRequestConnection += new System.EventHandler(this.crmUserList1_OnRequestConnection);
             // 
@@ -747,8 +766,7 @@
             this.tsbCopyUserFiltersToUser});
             this.toolStrip1.Location = new System.Drawing.Point(4, 5);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(1342, 32);
+            this.toolStrip1.Size = new System.Drawing.Size(1342, 34);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -757,7 +775,7 @@
             this.tsbResetUsersFiltersToDefault.Image = ((System.Drawing.Image)(resources.GetObject("tsbResetUsersFiltersToDefault.Image")));
             this.tsbResetUsersFiltersToDefault.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbResetUsersFiltersToDefault.Name = "tsbResetUsersFiltersToDefault";
-            this.tsbResetUsersFiltersToDefault.Size = new System.Drawing.Size(321, 29);
+            this.tsbResetUsersFiltersToDefault.Size = new System.Drawing.Size(328, 29);
             this.tsbResetUsersFiltersToDefault.Text = "Reset to the default Local Data Rules";
             this.tsbResetUsersFiltersToDefault.ToolTipText = "All synchronization rules of the selected users will be overriden with the defaul" +
     "t templates";
@@ -766,14 +784,14 @@
             // toolStripSeparator14
             // 
             this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(6, 32);
+            this.toolStripSeparator14.Size = new System.Drawing.Size(6, 34);
             // 
             // tsbCopyUserFiltersToUser
             // 
             this.tsbCopyUserFiltersToUser.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopyUserFiltersToUser.Image")));
             this.tsbCopyUserFiltersToUser.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbCopyUserFiltersToUser.Name = "tsbCopyUserFiltersToUser";
-            this.tsbCopyUserFiltersToUser.Size = new System.Drawing.Size(441, 29);
+            this.tsbCopyUserFiltersToUser.Size = new System.Drawing.Size(449, 29);
             this.tsbCopyUserFiltersToUser.Text = "Apply selected user synchronization filters to user(s)";
             this.tsbCopyUserFiltersToUser.Click += new System.EventHandler(this.tsbCopyUserFiltersToUser_Click);
             // 
@@ -885,5 +903,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox chkDisplayOfflineFilters;
         private System.Windows.Forms.CheckBox chkDisplayOutlookFilters;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+        private System.Windows.Forms.ToolStripLabel tslSearch;
+        private System.Windows.Forms.ToolStripTextBox txtSystemViewSearch;
     }
 }

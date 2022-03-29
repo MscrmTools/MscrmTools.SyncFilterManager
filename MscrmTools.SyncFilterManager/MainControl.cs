@@ -356,5 +356,10 @@ namespace MscrmTools.SyncFilterManager
         {
             defaultLocalDataRulesView.RenameView();
         }
+
+        private void txtSystemViewSearch_TextChanged(object sender, EventArgs e)
+        {
+            crmSystemViewsList.Search(txtSystemViewSearch.Text);
+        }
     }
 }

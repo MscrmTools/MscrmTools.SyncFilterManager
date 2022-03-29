@@ -231,6 +231,7 @@
   <ItemGroup>
     <Compile Include="AppCode\ListViewGroupHeaderSorter.cs" />
     <Compile Include="AppCode\ListViewItemComparer.cs" />
+    <Compile Include="AppCode\MetadataHelper.cs" />
     <Compile Include="AppCode\RuleManager.cs" />
     <Compile Include="AppCode\SavedQueryWrapper.cs" />
     <Compile Include="Controls\CrmSystemViewList.cs">
@@ -244,6 +245,12 @@
     </Compile>
     <Compile Include="Controls\CrmUserList.Designer.cs">
       <DependentUpon>CrmUserList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SolutionPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SolutionPicker.designer.cs">
+      <DependentUpon>SolutionPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ViewPropertiesDialog.cs">
       <SubType>Form</SubType>
@@ -296,6 +303,9 @@
     <EmbeddedResource Include="Controls\CrmUserList.resx">
       <DependentUpon>CrmUserList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SolutionPicker.resx">
+      <DependentUpon>SolutionPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ViewPropertiesDialog.resx">
       <DependentUpon>ViewPropertiesDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -330,7 +340,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_BuildVersioningStyle="None.YearStamp.MonthStamp.DayStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.YearStamp.MonthStamp.DayStamp" BuildVersion_ConfigurationName="Release" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\Microsoft.Web.WebView2.1.0.1054.31\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.1054.31\build\Microsoft.Web.WebView2.targets')" />
