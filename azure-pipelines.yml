@@ -1,5 +1,5 @@
 pool:
-  vm-image: 'windows-2022'
+  vm-image: 'windows-2019'
   demands:
   - msbuild
   - visualstudio
@@ -23,7 +23,6 @@ steps:
   displayName: 'Build solution **\*.sln'
   inputs:
     solution: '$(Parameters.solution)'
-    vsVersion: "17.0"
     platform: 'any cpu'
     configuration: 'release'
 
