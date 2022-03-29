@@ -2,7 +2,7 @@ jobs:
 - job: 'BuildSolution'
 
   pool:
-    vm-image: windows-2019
+    vmImage: windows-latest
 
 
   variables:
