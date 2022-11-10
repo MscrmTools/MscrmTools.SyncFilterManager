@@ -280,11 +280,13 @@ namespace MscrmTools.SyncFilterManager
 
         private void chkDisplayOfflineFilters_CheckedChanged(object sender, EventArgs e)
         {
+            usersLocalDataRulesView.ConnectionDetail = ConnectionDetail;
             usersLocalDataRulesView.DisplayViews(chkDisplayOutlookFilters.Checked, chkDisplayOfflineFilters.Checked);
         }
 
         private void chkDisplayOutlookFilters_CheckedChanged(object sender, EventArgs e)
         {
+            usersLocalDataRulesView.ConnectionDetail = ConnectionDetail;
             usersLocalDataRulesView.DisplayViews(chkDisplayOutlookFilters.Checked, chkDisplayOfflineFilters.Checked);
         }
 
@@ -300,65 +302,78 @@ namespace MscrmTools.SyncFilterManager
         private void tsbCopyToExistingDefaultRule_Click(object sender, EventArgs e)
         {
             if (crmSystemViewsList.GetSelectedSystemView().Count == 0) return;
+            crmSystemViewsList.ConnectionDetail = ConnectionDetail;
             crmSystemViewsList.UpdateFilterFromView(false);
         }
 
         private void tsbCopyToNewDefautRule_Click(object sender, EventArgs e)
         {
             if (crmSystemViewsList.GetSelectedSystemView().Count == 0) return;
+
+            crmSystemViewsList.ConnectionDetail = ConnectionDetail;
             crmSystemViewsList.CreateFilterFromView(false);
         }
 
         private void tsbCopyUserFiltersToUser_Click(object sender, EventArgs e)
         {
+            crmUserList1.ConnectionDetail = ConnectionDetail;
             crmUserList1.ReplaceUserFilters();
         }
 
         private void tsbDefineAsDefault_Click(object sender, EventArgs e)
         {
             if (defaultLocalDataRulesView.GetSelectedSystemView().Count == 0) return;
+            defaultLocalDataRulesView.ConnectionDetail = ConnectionDetail;
             defaultLocalDataRulesView.DefineAsDefault();
         }
 
         private void tsbShowFetchXmlDefault_Click(object sender, EventArgs e)
         {
             if (defaultLocalDataRulesView.GetSelectedSystemView().Count == 0) return;
+            defaultLocalDataRulesView.ConnectionDetail = ConnectionDetail;
             ShowFetchXml(defaultLocalDataRulesView.GetSelectedSystemView().FirstOrDefault());
         }
 
         private void tsbShowFetchXmlSystemRules_Click(object sender, EventArgs e)
         {
+            systemRulesListView.ConnectionDetail = ConnectionDetail;
             ShowFetchXml(systemRulesListView.GetSelectedSystemView().FirstOrDefault());
         }
 
         private void tsbShowFetchXmlUser_Click(object sender, EventArgs e)
         {
             if (usersLocalDataRulesView.GetSelectedSystemView().Count == 0) return;
+            usersLocalDataRulesView.ConnectionDetail = ConnectionDetail;
             ShowFetchXml(usersLocalDataRulesView.GetSelectedSystemView().FirstOrDefault());
         }
 
         private void tsbShowFetchXmlView_Click(object sender, EventArgs e)
         {
+            crmSystemViewsList.ConnectionDetail = ConnectionDetail;
             ShowFetchXml(crmSystemViewsList.GetSelectedSystemView().FirstOrDefault());
         }
 
         private void tsbSystemFilterProperties_Click(object sender, EventArgs e)
         {
+            systemRulesListView.ConnectionDetail = ConnectionDetail;
             systemRulesListView.RenameView();
         }
 
         private void tsbSystemRuleDelete_Click(object sender, EventArgs e)
         {
+            systemRulesListView.ConnectionDetail = ConnectionDetail;
             systemRulesListView.DeleteSelectedRules();
         }
 
         private void tsbTemplateFilterProperties_Click(object sender, EventArgs e)
         {
+            defaultLocalDataRulesView.ConnectionDetail = ConnectionDetail;
             defaultLocalDataRulesView.RenameView();
         }
 
         private void txtSystemViewSearch_TextChanged(object sender, EventArgs e)
         {
+            crmSystemViewsList.ConnectionDetail = ConnectionDetail;
             crmSystemViewsList.Search(txtSystemViewSearch.Text);
         }
     }

@@ -12,8 +12,7 @@
     <description>Manage filters for offline, Outlook and server side synchronizations</description>
     <summary>Manage filters for offline, Outlook and server side synchronizations</summary>
     <releaseNotes>
-      Improved user search and selection
-      Improved loading of system views by allowing selection of solution
+      Fixed error when copying a user filter to another user (#8)
     </releaseNotes>
     <tags>XrmToolBox Plugin SyncFilterManager</tags>
     <dependencies>
